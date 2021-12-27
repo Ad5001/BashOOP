@@ -19,7 +19,15 @@ This is the main script which will use our objects.
 
 importNamespace Example.shn
 
-Example.Object t "Test"
+Example.Object t1 "Test"
+Example.Object t2 "Example"
+
+t1.print
+t2.print
+
+t1.name = "New name"
+
+t1.print
 ```
 
 `Example.shn`:

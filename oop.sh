@@ -4,7 +4,7 @@
 # Internal variables are marked with a beginning underscore, like in most other languages.
 # Signatures are a list of arguments.. Those within <> are mandatory, the ones within [] are optional.
 _namespace=""
-_namespacePath=""
+_namespacePath=$(realpath $(dirname ${BASH_SOURCE[0]}))
 
 # Namespace declaration.
 # Signature: ([string namespaceName])
