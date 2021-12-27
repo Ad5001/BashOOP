@@ -1,0 +1,12 @@
+# Property declaration
+property Object.name
+
+# Optional constructor.
+Object.constructor() {
+    Object.name = $1
+}
+
+# Example function
+Object.print() {
+    echo "Example OOP from $(this.name)!"
+}

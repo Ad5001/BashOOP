@@ -1,0 +1,7 @@
+# Namespace declaration.
+namespace Example
+# If namespace is set to null (no argument), then the object will be declared globally.
+# Otherwise, the object will be declared within the namespace.
+
+# Object declaration, from class name to file name.
+class Object "Object.shc"
