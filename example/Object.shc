@@ -3,7 +3,7 @@ property Object.name
 
 # Optional constructor.
 Object.constructor() {
-    Object.name = $1
+    this.name = $1
 }
 
 # Example function
