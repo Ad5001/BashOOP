@@ -7,57 +7,113 @@ This idea was inspired from https://stackoverflow.com/a/40981277 in order to be 
 - .shn: **SH**ell **N**amespace
 - .shc: **SH**ell **C**lass
 
-## Example syntax:
+## Syntax:
+
+
+To declare objects, there exists 3 scripts.
+
+- The main script in which we'll use our object (suggested extension: `.sh`)
+- The namespace declaration script (suggested extension: `.shn`)
+- The class declaration script (suggested extension: `.shc`)
+
+The full example is available in the "example" directory.
 
 ### Declaring objects.
 
-`script.sh`:
-This is the main script which will use our objects.
+An object has a type name, properties and functions.    
+To declare a property, you can use the `property` function. For example, for an class named `Object`, you can declare a property name using:
+```bash
+property Object.name
+```
+**NOTE**: Bash doesn't have a typing system, so you cannot set property types.
 
+Class functions are declared the same way you would in bash, except it uses a prefix with object type. For example:
+```bash
+Object.print() {
+    echo "Example OOP from $(this.name)!"
+}
+```
+As you can see here, you can access properties of the object using the `this` keyword in a function call.    
+Similarly, you can set properties using a `=` and value argument. For example:
+```bash
+this.name = "New name"
+```
+
+Objects can also have constructors which will be called at the creation of the object with arguments provided at the creation.   
+They are simply a function with the name `constructor`. They aren't mandatory for any object.
+
+### Creating a namespace.
+While you can import objects directly in the global namespace, it's recommanded to use a separate namespace file.
+
+When you've created your namespace file, you can specify the name of the namespace using the `namespace` keyword:
+```bash
+namespace Example
+```
+You can then declare object classes using the `class` directive by specifying it's name and associated script file. For example:
+```bash
+class Object "Object.shc"
+```
+
+All objects created under this class will be accessible with namespace as prefix (here our Object class would be accessible under `Example.Object`).
+
+Similarly, static classes can be declared using the `static_class` keyword.
+```bash
+static_class Static "Static.shc"
+```
+
+**NOTE**: Static classes can't have properties. As all static classes are global, you can declare global variables directly.
+
+### Using objects.
+Now that we've created our namespace, we will want to use it and our objects in our script.   
+First things first, we'll want to import the library `oop.sh`. Depending on where it's located, you will want to use a global variable indicating it's location.    
 ```bash
 . $OOP_ROOT/oop.sh # Import library.
-
-importNamespace Example.shn
-
-Example.Object t1 "Test"
-Example.Object t2 "Example"
-
-t1.print
-t2.print
-
-t1.name = "New name"
-
-t1.print
 ```
 
-`Example.shn`:
-This file declares our namespace and all the objects within it.
-
+After that, we'll want to import our namespace file with all it's classes prefixed in the namespace name.
 ```bash
-# Namespace declaration.
-namespace Example
-# If namespace is set to null (no argument), then the object will be declared globally.
-# Otherwise, the object will be declared within the namespace.
-
-# Object declaration, from class name to file name.
-class Object "Object.shc"
-
+importNamespace "Example.shn"
 ```
 
-`Object.shc`:
-This file will contain the object code.
-
+After that you can declare the object using the following syntax: `<ObjectType> <variableName> [constructor arguments...]`. For example:
 ```bash
-# Property declaration
-property Object.name
-
-# Optional constructor.
-Object.constructor() {
-    Object.name = $1
-}
-
-# Example function
-Object.print() {
-    echo "Example OOP from $($this.name)!"
-}
+Example.Object obj1 "Test"
 ```
+
+You can then call it's functions.
+```bash
+$obj1.print
+obj1.print
+```
+**NOTE**: The $ is not mandatory, but is recommanded for clarity.
+
+... or access and edit it's properties.
+```bash
+name=$(obj1.name)
+obj1.name = "New name"
+```
+
+You can store objects in variables as a string. For example, you can have have objects as class arguments, function returs or arrays of objects like this:
+```bash
+Example.Object obj1 "First Object"
+Example.Object obj2 "Second Object"
+objs=($obj1 $obj2)
+${objs[0]}.print
+${objs[1]}.print
+```
+
+You can also access the static classes by using their class type directly. For example:
+```bash
+Example.Static.print "Example text"
+```
+
+If you find that using the namespace everytime is a bit cumbersome, you can use the `using` keyword to alias all classes of a namespace into the global namespace.    
+Example usage:
+```bash
+using Example
+
+Object usingObj "New"
+
+$usingObj.print
+```
+**NOTE**: When `using` a namespace which contains static classes, please note that the static class file will be re-imported.
