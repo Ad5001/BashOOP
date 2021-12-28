@@ -3,14 +3,31 @@ OOP_ROOT=..
 
 . $OOP_ROOT/oop.sh # Import library.
 
+# Import library
 importNamespace Example.shn
 
-Example.Object t1 "Test"
-Example.Object t2 "Example"
+# OOP Example
+Example.Object obj1 "First Object"
+Example.Object obj2 "Second Object"
 
-t1.print
-t2.print
+$obj1.print
+# The $ is not mandatory, but is recommanded.
+obj2.print
 
-t1.name = "New name"
+objs=($obj1 $obj2)
+${objs[0]}.print
+${objs[1]}.print
 
-t1.print
+$obj1.name = "New name"
+
+$obj1.print
+
+# Static example
+Example.Static.print "Example text"
+
+# Using directive.
+using Example
+
+Object usingObj "New"
+
+$usingObj.print

@@ -1,0 +1,6 @@
+
+# Function declaration.
+# NOTE: Properties can't be declared for static classes
+Static.print() {
+    echo "$@"
+}
