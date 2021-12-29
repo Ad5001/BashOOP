@@ -69,14 +69,17 @@ _createObject() {
     
     # Declare dummy constructor.
     eval "$varName.constructor() { :; }"
+    # Declare base properties.
+    eval "$varName.type() { echo $type; }"
+    eval "$varName.source() { echo $associatedFile; }"
     # Create property array.
     eval "declare -Ag _${varName}_properties"
+    # alias the "varName" variable to itself, so that it can be used and transmitted in other variables (e.g: $varName.name would alias to varName.name)
+    eval "$varName='$varName'"
     # Imports the file and replace all "<Type>." with the variable name.
     . <(sed s/this\\./$varName./g <(sed s/$type\\./$varName./g $associatedFile))
     # Call the constructor
-    eval "$varName.constructor $constructorArguments"
-    # alias the "varName" variable to itself, so that it can be used and transmitted in other variables (e.g: $varName.name would alias to varName.name)
-    eval "$varName='$varName'"
+    $varName.constructor $constructorArguments
 }
 
 # Object creation.
