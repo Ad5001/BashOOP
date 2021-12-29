@@ -170,7 +170,7 @@ _accessProperty() {
     if [ "$3" == "=" ]; then
         eval "_${varName}_properties[$prop]=\"\$val\""
     else
-        eval "echo \${_${varName}_properties[$prop]}"
+        eval "echo \"\${_${varName}_properties[$prop]}\""
     fi
 }
 
