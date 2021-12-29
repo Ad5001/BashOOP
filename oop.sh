@@ -187,5 +187,5 @@ property() {
     # Default value
     eval "_${varName}_properties[$prop]='$propertyValue'"
     # Property alias 
-    eval "$propertyFullName() { _accessProperty $varName $prop \$@;  }"
+    eval "$propertyFullName() { _accessProperty $varName $prop \$1 \"\${@:2}\";  }"
 }
