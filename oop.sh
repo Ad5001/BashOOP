@@ -166,8 +166,9 @@ static_class() {
 _accessProperty() {
     varName=$1
     prop=$2
+    val="${@:4}"
     if [ "$3" == "=" ]; then
-        eval "_${varName}_properties[$prop]=\"${@:4}\""
+        eval "_${varName}_properties[$prop]=\"\$val\""
     else
         eval "echo \${_${varName}_properties[$prop]}"
     fi
