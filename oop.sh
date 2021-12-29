@@ -1,4 +1,20 @@
-#!/bin/bash
+#
+# BashOOP - Simple OOP implementation for bash.
+# Copyright (C) 2021  Ad5001 <mail@ad5001.eu>
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
 
 # This file contains all functions required to create a namespace.
 # Internal variables are marked with a beginning underscore, like in most other languages.
@@ -59,6 +75,16 @@ using() {
     fi
 }
 
+# Creates a "property holder" based on a name.
+# A "property holder" is a dictionnary maintaining the values of properties for a specific variable.
+# One is created each time an object is declared, but this function can also be used for namespaces to have global
+# properties.
+# Signature: (<string name>)
+createPropertyHolder() {
+    name=$1
+    eval "declare -Ag _${name}_properties"
+}
+
 # Creates an object instance.
 # Signature: (<string type>, <string associatedFile>, <string variableName>, [string[] constructorArguments])
 _createObject() {
@@ -73,7 +99,7 @@ _createObject() {
     eval "$varName.type() { echo $type; }"
     eval "$varName.source() { echo $associatedFile; }"
     # Create property array.
-    eval "declare -Ag _${varName}_properties"
+    createPropertyHolder $varName
     # alias the "varName" variable to itself, so that it can be used and transmitted in other variables (e.g: $varName.name would alias to varName.name)
     eval "$varName='$varName'"
     # Imports the file and replace all "<Type>." with the variable name.

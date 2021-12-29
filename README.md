@@ -61,7 +61,12 @@ Similarly, static classes can be declared using the `static_class` keyword.
 static_class Static "Static.shc"
 ```
 
-**NOTE**: Static classes can't have properties. As all static classes are global, you can declare global variables directly.
+**NOTE**: Static classes can't have properties. However, you can declare "namespace properties" using first the `createPropertyHolder` and then declare properties directly in the namespace file like this:
+```bash
+createPropertyHolder Example
+
+property Example.name
+```
 
 ### Using objects.
 Now that we've created our namespace, we will want to use it and our objects in our script.   
