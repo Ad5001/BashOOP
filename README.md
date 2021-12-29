@@ -126,3 +126,4 @@ Object usingObj "New"
 $usingObj.print
 ```
 **NOTE**: When `using` a namespace which contains static classes, please note that the static class file will be re-imported.
+**NOTE**: `using` is not file contextual. So `using` a namespace will use it in every bash script.

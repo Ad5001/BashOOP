@@ -167,7 +167,7 @@ _accessProperty() {
     varName=$1
     prop=$2
     if [ "$3" == "=" ]; then
-        eval "_${varName}_properties[$prop]='${@:4}'"
+        eval "_${varName}_properties[$prop]=\"${@:4}\""
     else
         eval "echo \${_${varName}_properties[$prop]}"
     fi
