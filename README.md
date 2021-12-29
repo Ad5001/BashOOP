@@ -26,6 +26,10 @@ To declare a property, you can use the `property` function. For example, for an 
 property Object.name
 ```
 **NOTE**: Bash doesn't have a typing system, so you cannot set property types.
+You can also set default values by adding a property after the declaration, e.g:
+```bash
+property Object.name "Example"
+```
 
 Class functions are declared the same way you would in bash, except it uses a prefix with object type. For example:
 ```bash

@@ -173,17 +173,18 @@ _accessProperty() {
     fi
 }
 
-# Declares a property.
-# Signature: (<string propertyFullName>)
+# Declares a property with an optional default value.
+# Signature: (<string propertyFullName>, [string propertyValue])
 property() {
     propertyFullName=$1
+    propertyValue=$2
     # Split the name by ".". First element is variable name,
     # second is property name.
     propertyNames=($(echo $propertyFullName | tr "." "\n"))
     varName=${propertyNames[0]}
     prop=${propertyNames[1]}
     # Default value
-    eval "_${varName}_properties[$prop]=''"
+    eval "_${varName}_properties[$prop]='$propertyValue'"
     # Property alias 
     eval "$propertyFullName() { _accessProperty $varName $prop \$@;  }"
 }
