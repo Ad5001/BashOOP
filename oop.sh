@@ -91,7 +91,7 @@ _createObject() {
     type=$1
     associatedFile=$2
     varName=$3
-    constructorArguments=${@:4}
+    constructorArguments="${@:4}"
     
     # Declare dummy constructor.
     eval "$varName.constructor() { :; }"
