@@ -29,8 +29,8 @@ declare -Ag _namespacesClasses
 # This dictionnary links all files for static namespaces.
 declare -Ag _namespacesStaticClasses
 
-# Namespace declaration.
-# Signature: ([string namespaceName])
+# Declares the current namespace.
+# Signature: ([string namespaceName]) -> void
 namespace() {
     _namespace=$1;
 }
@@ -40,7 +40,7 @@ namespace() {
 # properly resolved.
 # For example, if the object Object exists within namespace Example, it
 # will be accessible with "Example.Object".
-# Signature: (<string namespaceFile>)
+# Signature: (<string namespaceFile>) -> void
 importNamespace() {
     namespaceFile=$1
     # Save the path in order to get the absolute path of the file.
@@ -51,7 +51,7 @@ importNamespace() {
 # Aliases the classes in global namespace.
 # For example, if the object Object exists within namespace Example, it
 # will be accessible with "Example.Object" and "Object".
-# Signature: (<string namespaceName>)
+# Signature: (<string namespaceName>) -> void
 using() {
     namespaceName=$1
     # Import static classes
@@ -79,14 +79,14 @@ using() {
 # A "property holder" is a dictionnary maintaining the values of properties for a specific variable.
 # One is created each time an object is declared, but this function can also be used for namespaces to have global
 # properties.
-# Signature: (<string name>)
+# Signature: (<string name>) -> void
 createPropertyHolder() {
     name=$1
     eval "declare -Ag _${name}_properties"
 }
 
-# Creates an object instance.
-# Signature: (<string type>, <string associatedFile>, <string variableName>, [string[] constructorArguments])
+# Creates an object instance of `type` in variable `variableName`.
+# Signature: (<string type>, <string associatedFile>, <string variableName>, [string[] constructorArguments]) -> void
 _createObject() {
     type=$1
     associatedFile=$2
@@ -108,8 +108,8 @@ _createObject() {
     $varName.constructor $constructorArguments
 }
 
-# Object creation.
-# Signature: (<string type>, <string associatedFile>)
+# Declares a new class named `type` in the current namespace being defined in `associatedFile`.
+# Signature: (<string type>, <string associatedFile>) -> void
 class() {
     type=$1 # Type of the object as declared within the file.
     associatedFile=$2
@@ -134,8 +134,8 @@ class() {
     fi
 }
 
-# Static class creation
-# Signature: (<string type>, <string associatedFile>)
+# Declares a new static class named `type` in the current namespace being defined in `associatedFile`.
+# Signature: (<string type>, <string associatedFile>) -> void
 static_class() {
     type=$1 # Type of the object as declared within the file.
     associatedFile=$2
@@ -161,8 +161,8 @@ static_class() {
     fi
 }
 
-# Associated function for properties
-# Signature: (<string variableName>, <string propertyName>, [string operator, string value])
+# Gets or sets the value of the property `propertyName` of an object set to variable `variableName`.
+# Signature: (<string variableName>, <string propertyName>, [string operator, string value]) -> string|void
 _accessProperty() {
     varName=$1
     prop=$2
@@ -174,8 +174,8 @@ _accessProperty() {
     fi
 }
 
-# Declares a property with an optional default value.
-# Signature: (<string propertyFullName>, [string propertyValue])
+# Declares a property `propertyFullName` with an optional default value `propertyValue`.
+# Signature: (<string propertyFullName>, [string propertyValue]) -> void
 property() {
     propertyFullName=$1
     propertyValue=$2
