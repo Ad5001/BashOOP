@@ -92,14 +92,12 @@ Example.Object obj1 "Test"
 You can then call it's functions.
 ```bash
 $obj1.print
-obj1.print
 ```
-**NOTE**: The $ is not mandatory, but is recommanded for clarity.
 
 ... or access and edit it's properties.
 ```bash
-name=$(obj1.name)
-obj1.name = "New name"
+name=$($obj1.name)
+$obj1.name = "New name"
 ```
 
 You can store objects in variables as a string. For example, you can have have objects as class arguments, function returs or arrays of objects like this:

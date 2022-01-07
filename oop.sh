@@ -1,6 +1,6 @@
 #
 # BashOOP - Simple OOP implementation for bash.
-# Copyright (C) 2021  Ad5001 <mail@ad5001.eu>
+# Copyright (C) 2022  Ad5001 <mail@ad5001.eu>
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,12 @@
 # Namespace related variables.
 _namespace=""
 _namespacePath=$(realpath $(dirname ${BASH_SOURCE[0]}))
+
+# Allows the creation of temporary, unique names for variables so that 
+# when declaring a new object with the same variable name, the previous one wouldn't be overwritten with
+# the new object.
+# However, this disallows the syntax that doesn't use $ at first, which makes the documentation clearer.
+_counter=0
 
 # This dictionnary saves all classes for each namespace so they can be retreived and aliased.
 declare -Ag _namespacesClasses
@@ -93,17 +99,21 @@ _createObject() {
     varName=$3
     constructorArguments="${@:4}"
     
+    # Get a temporary variable. It's equivalent to the memory space in bash of the object.
+    varTmpName="_obj${_counter}"
+    _counter=$((_counter + 1))
+    
     # Declare dummy constructor.
-    eval "$varName.constructor() { :; }"
+    eval "$varTmpName.constructor() { :; }"
     # Declare base properties.
-    eval "$varName.type() { echo $type; }"
-    eval "$varName.source() { echo $associatedFile; }"
+    eval "$varTmpName.type() { echo $type; }"
+    eval "$varTmpName.source() { echo $associatedFile; }"
     # Create property array.
-    createPropertyHolder $varName
-    # alias the "varName" variable to itself, so that it can be used and transmitted in other variables (e.g: $varName.name would alias to varName.name)
-    eval "$varName='$varName'"
+    createPropertyHolder $varTmpName
+    # alias the "varTmpName" variable to itself, so that it can be used and transmitted in other variables (e.g: $varName.name would alias to varTmpName.name)
+    eval "$varName='$varTmpName'"
     # Imports the file and replace all "<Type>." with the variable name.
-    . <(sed s/this\\./$varName./g <(sed s/$type\\./$varName./g $associatedFile))
+    . <(sed s/this\\./$varTmpName./g <(sed s/$type\\./$varTmpName./g $associatedFile))
     # Call the constructor
     $varName.constructor $constructorArguments
 }
